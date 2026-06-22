@@ -1,0 +1,85 @@
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url(backgrounds/boat-lake.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .heading, .entry-message, .container {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+  }
+  .heading {
+    font-size: 40px;
+  }
+  .entry-message {
+    font-size: 20px;
+    margin: 0 0 0 0;
+  }
+  .input-bar, .input-button {
+    margin-top: 50px;
+  }
+  .input-bar {
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    padding: 7px 5px 7px 5px;
+    width: 550px;
+    border-width: 1px;
+    color: white;
+  }
+  ::placeholder {
+    font-weight: 700;
+  }
+   .input-button {
+    margin-left: 5px;
+    border-radius: 0;
+    border: none;
+    background-color: green;
+    color: white;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-weight: 700;
+   }
+   .task-container{
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    font-weight: 100;
+    font-size: 20px;
+    margin: 60px 60px auto auto;
+    padding: 10px 10px 10px 10px;
+    width: 250px;
+    min-height: 150px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+   }
+   .task-cards {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+   }
+   .remove-btn {
+    background-color: rgba(0, 0, 0, 0);
+    font-weight: 700;
+    position: absolute;
+    left: 0px;
+    top: 2px;
+    border: none;
+    color: rgb(224, 15, 15);
+    cursor: pointer;
+   }
+   .edit-btn {
+    background-color: rgba(0, 0, 0, 0);
+    font-weight: 700;
+    position: absolute;
+    right: 0px;
+    top: 2px;
+    border: none;
+    color: rgb(0, 130, 139);
+    cursor: pointer;
+   }
