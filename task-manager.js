@@ -1,6 +1,7 @@
 const inputBtn = document.querySelector('.js-input-button');
 let taskList = [];
 const inputBar = document.querySelector('.js-input-bar');
+const taskCardsContainer = document.querySelector('.js-task-cards');
 
 function addTask() {
     
@@ -8,15 +9,22 @@ function addTask() {
     
     if (inputBarText !== '') {
     taskList.push(inputBarText);
+    
+      inputBar.value = '';
 
-    const taskCardsContainer = document.querySelector('.js-task-cards');
+      renderTaskList();
+    };
+  }
+
+
+  function renderTaskList() {
     taskCardsContainer.innerHTML = '';
 
-    taskList.forEach((task) => {
+    taskList.forEach((task, index) => {
       let taskCardHTML = `
       <div class="task-container">
-        <button class="edit-btn">Edit</button>
-        <button class="remove-btn">Remove</button>
+        <button class="edit-btn js-edit-button">Edit</button>
+        <button class="remove-btn js-remove-button" data-task-index = "${index}">Remove</button>
         <label>
             <input type="checkbox" name="task-card">
             ${task}
@@ -25,8 +33,15 @@ function addTask() {
       `;
       taskCardsContainer.innerHTML += taskCardHTML;
       });
-      inputBar.value = ''; 
-    };
+      const removeButtons = document.querySelectorAll('.js-remove-button');
+
+      removeButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+          const index = event.target.getAttribute('data-task-index')
+            taskList.splice(index, 1);
+            renderTaskList();
+          });
+        });
   }
 
 
@@ -39,4 +54,3 @@ inputBar.addEventListener('keydown', (event) => {
     addTask();
   }
 });
-  
