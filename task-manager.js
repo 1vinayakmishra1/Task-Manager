@@ -2,6 +2,7 @@ const inputBtn = document.querySelector('.js-input-button');
 let taskList = [];
 const inputBar = document.querySelector('.js-input-bar');
 const taskCardsContainer = document.querySelector('.js-task-cards');
+let editingTaskIndex = null;
 
 function addTask() {
     
@@ -23,7 +24,7 @@ function addTask() {
     taskList.forEach((task, index) => {
       let taskCardHTML = `
       <div class="task-container">
-        <button class="edit-btn js-edit-button">Edit</button>
+        <button class="edit-btn js-edit-button" data-task-index = "${index}">Edit</button>
         <button class="remove-btn js-remove-button" data-task-index = "${index}">Remove</button>
         <label>
             <input type="checkbox" name="task-card">
@@ -37,20 +38,48 @@ function addTask() {
 
       removeButtons.forEach((button) => {
         button.addEventListener('click', (event) => {
-          const index = event.target.getAttribute('data-task-index')
+          const index = event.target.getAttribute('data-task-index');
             taskList.splice(index, 1);
             renderTaskList();
           });
         });
-  }
+
+      const editButtons = document.querySelectorAll('.js-edit-button');
+
+      editButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+          const index = event.target.getAttribute('data-task-index');
+          inputBar.value = taskList.at(index);
+          inputBar.focus();
+          inputBtn.innerText = 'Save Edit';
+          editingTaskIndex = index;
+        });
+      });
+  };
 
 
 inputBtn.addEventListener('click', () => {
+  if (editingTaskIndex !== null) {
+    taskList[editingTaskIndex] = inputBar.value;
+    editingTaskIndex = null;
+    inputBtn.innerText = 'Add Task';
+    renderTaskList();
+    inputBar.value = '';
+  } else {
   addTask();
+  }
 });
 
 inputBar.addEventListener('keydown', (event) => {
   if(event.key === 'Enter') {
-    addTask();
+    if (editingTaskIndex !== null) {
+      taskList[editingTaskIndex] = inputBar.value;
+      editingTaskIndex = null;
+      inputBtn.innerText = 'Add Task';
+      renderTaskList();
+      inputBar.value = '';
+  } else {
+      addTask();
+    }
   }
 });
