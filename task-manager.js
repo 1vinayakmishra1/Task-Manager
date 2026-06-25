@@ -4,6 +4,9 @@ const inputBar = document.querySelector('.js-input-bar');
 const taskCardsContainer = document.querySelector('.js-task-cards');
 let editingTaskIndex = null;
 
+loadTask();
+renderTaskList();
+
 function addTask() {
     
     let inputBarText = inputBar.value.trim();
@@ -14,6 +17,7 @@ function addTask() {
       inputBar.value = '';
 
       renderTaskList();
+      saveTolocalStorage();
     };
   }
 
@@ -41,6 +45,7 @@ function addTask() {
           const index = event.target.getAttribute('data-task-index');
             taskList.splice(index, 1);
             renderTaskList();
+            saveTolocalStorage();
           });
         });
 
@@ -62,6 +67,7 @@ inputBtn.addEventListener('click', () => {
   if (editingTaskIndex !== null) {
     taskList[editingTaskIndex] = inputBar.value;
     editingTaskIndex = null;
+    saveTolocalStorage();
     inputBtn.innerText = 'Add Task';
     renderTaskList();
     inputBar.value = '';
@@ -75,6 +81,7 @@ inputBar.addEventListener('keydown', (event) => {
     if (editingTaskIndex !== null) {
       taskList[editingTaskIndex] = inputBar.value;
       editingTaskIndex = null;
+      saveTolocalStorage();
       inputBtn.innerText = 'Add Task';
       renderTaskList();
       inputBar.value = '';
@@ -83,3 +90,12 @@ inputBar.addEventListener('keydown', (event) => {
     }
   }
 });
+
+
+function saveTolocalStorage() {
+  localStorage.setItem('myTask', JSON.stringify(taskList));
+}
+
+function loadTask() {
+  taskList = JSON.parse(localStorage.getItem('myTask')) || [];
+}
