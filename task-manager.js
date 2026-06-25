@@ -12,7 +12,10 @@ function addTask() {
     let inputBarText = inputBar.value.trim();
     
     if (inputBarText !== '') {
-    taskList.push(inputBarText);
+    taskList.push({
+      text: inputBarText,
+      isCompleted: false
+    });
     
       inputBar.value = '';
 
@@ -27,17 +30,35 @@ function addTask() {
 
     taskList.forEach((task, index) => {
       let taskCardHTML = `
-      <div class="task-container">
+      <div class="task-container ${task.isCompleted ? 'completed-task' : ''}">
         <button class="edit-btn js-edit-button" data-task-index = "${index}">Edit</button>
         <button class="remove-btn js-remove-button" data-task-index = "${index}">Remove</button>
         <label>
-            <input type="checkbox" name="task-card">
-            ${task}
+            <input type="checkbox" name="task-card" class="check-box" data-task-index = "${index}"
+            ${task.isCompleted ? 'checked' : ''}>
+            ${task.text}
         </label>
       </div>
       `;
       taskCardsContainer.innerHTML += taskCardHTML;
       });
+
+      const checkboxes = document.querySelectorAll('.check-box');
+
+      checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', (event) => {
+          const index = event.target.getAttribute('data-task-index');
+            if (taskList[index].isCompleted === false) {
+              taskList[index].isCompleted = true;
+            } else {
+              taskList[index].isCompleted = false;
+            }
+            saveTolocalStorage();
+            renderTaskList();
+        });
+      });
+
+
       const removeButtons = document.querySelectorAll('.js-remove-button');
 
       removeButtons.forEach((button) => {
@@ -54,7 +75,8 @@ function addTask() {
       editButtons.forEach((button) => {
         button.addEventListener('click', (event) => {
           const index = event.target.getAttribute('data-task-index');
-          inputBar.value = taskList.at(index);
+
+          inputBar.value = taskList.at(index).text;
           inputBar.focus();
           inputBtn.innerText = 'Save Edit';
           editingTaskIndex = index;
@@ -65,7 +87,7 @@ function addTask() {
 
 inputBtn.addEventListener('click', () => {
   if (editingTaskIndex !== null) {
-    taskList[editingTaskIndex] = inputBar.value;
+    taskList[editingTaskIndex].text = inputBar.value;
     editingTaskIndex = null;
     saveTolocalStorage();
     inputBtn.innerText = 'Add Task';
@@ -79,7 +101,7 @@ inputBtn.addEventListener('click', () => {
 inputBar.addEventListener('keydown', (event) => {
   if(event.key === 'Enter') {
     if (editingTaskIndex !== null) {
-      taskList[editingTaskIndex] = inputBar.value;
+      taskList[editingTaskIndex].text = inputBar.value;
       editingTaskIndex = null;
       saveTolocalStorage();
       inputBtn.innerText = 'Add Task';
